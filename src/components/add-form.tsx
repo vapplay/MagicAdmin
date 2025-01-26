@@ -26,14 +26,6 @@ type Props = {
   history: History;
 };
 
-/* 
-  if (!name_es || !name_en || !name_pt || !description_en || !description_es || !description_pt || !type || !isPremium || !active) {
-            res.status(400).json({ message: "Faltan datos" });
-            return;
-        }
-
-*/
-
 const Box = ({
   children,
   className,
@@ -123,9 +115,9 @@ export const AddForm = ({ onClose, history }: Props) => {
 
       formData.append("language", form.language || "es");
 
-      formData.append("type", form.type.toString() || "1"); // Asegúrate de convertir 'type' en un número
-      formData.append("isPremium", form.isPremium ? "true" : "false"); // Convertir a booleano en el backend
-      formData.append("active", form.active ? "true" : "false"); // De igual forma
+      formData.append("type", form.type.toString() || "1");
+      formData.append("isPremium", form.isPremium ? "true" : "false");
+      formData.append("active", form.active ? "true" : "false");
 
       // Archivos de imagen y audio
       if (form.poster) formData.append("image", form.poster);
@@ -138,7 +130,9 @@ export const AddForm = ({ onClose, history }: Props) => {
       // Inicia la carga
       setLoading(true);
 
-      if (history) {
+      console.log(form);
+
+      /*   if (history) {
         toast.info("Editando historial");
         const response = await editHistory(formData);
         console.log(response);
@@ -147,9 +141,9 @@ export const AddForm = ({ onClose, history }: Props) => {
         await addHistory(formData);
       }
 
-      if (onClose) onClose();
+      if (onClose) onClose(); */
       toast.success("Historial añadido con éxito");
-      window.location.reload();
+ /*      window.location.reload(); */
     } catch (e: any) {
       toast.error(e?.message || "Ocurrió un error al enviar los datos.");
     } finally {
@@ -265,18 +259,15 @@ export const AddForm = ({ onClose, history }: Props) => {
           {/* Extras (ocupa 1 columna) */}
           <Box className="col-span-1">
             <Label>Extras</Label>
-            <Select>
+            <Select
+              value={String(form.type)}
+              onValueChange={(value) => {
+                const type = parseInt(value, 10);
+                setForm((prev) => ({ ...prev, type }));
+              }}
+            >
               <SelectTrigger className="w-[180px]">
-                <SelectValue
-                  placeholder="Type"
-                  defaultValue={form.type}
-                  onChange={(value:any) => {
-                    const type = parseInt(value, 10);
-                    if (!isNaN(type)) {
-                      setForm((prev) => ({ ...prev, type }));
-                    }
-                  }}
-                />
+                <SelectValue placeholder="Type" />
               </SelectTrigger>
               <SelectContent>
                 {HistoryType.map((item) => (

@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/sonner";
+import { AppSidebar } from "@/components/app-sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -36,8 +38,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
-          
+          <SidebarProvider>
+            <main className="flex flex-row gap-8 row-start-2 items-center sm:items-start py-4 w-full">
+              <AppSidebar />
+              {children}
+            </main>
+          </SidebarProvider>
         </ThemeProvider>
 
         <Toaster />

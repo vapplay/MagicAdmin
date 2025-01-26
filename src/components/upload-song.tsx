@@ -57,7 +57,7 @@ const UploadAudio = ({
   };
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault(); // Necesario para permitir el drop
+    event.preventDefault(); 
   };
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
