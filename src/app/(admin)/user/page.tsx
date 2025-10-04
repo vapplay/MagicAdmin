@@ -118,7 +118,8 @@ export default function UserManagementPage() {
       .sort((a, b) => {
         const fieldA = a[sortBy];
         const fieldB = b[sortBy];
-        const comparison = fieldA > fieldB ? 1 : fieldA < fieldB ? -1 : 0;
+        const comparison =
+          fieldA && fieldB && fieldA > fieldB ? 1 : fieldA && fieldB && fieldA < fieldB ? -1 : 0;
         return sortOrder === 'desc' ? -comparison : comparison;
       });
   }, [users, searchTerm, premiumFilter, dateRange, sortBy, sortOrder]);

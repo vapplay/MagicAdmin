@@ -227,7 +227,7 @@ export default function HistoryTable() {
     onSuccess,
   });
 
-  const { mutate: deleteStory, isLoading: isDeleting } = useMutation({
+  const { mutate: deleteStory, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => updater('history/delete', { id }),
     onSuccess: () => {
       onSuccess();

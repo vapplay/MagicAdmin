@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:4000/api/';
+const BASE_URL = 'https://magicapinew-production.up.railway.app/api/';
 
 const fetcher = async (url: string, options?: RequestInit) => {
   const response = await fetch(BASE_URL + url, options);

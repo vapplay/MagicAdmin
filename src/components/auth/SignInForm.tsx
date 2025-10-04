@@ -5,14 +5,15 @@ import Label from '@/components/form/Label';
 import Button from '@/components/ui/button/Button';
 import { EyeCloseIcon, EyeIcon } from '@/icons';
 import React, { useState } from 'react';
-import { useAuth } from '@/hooks/useAuth'; // <-- Importamos nuestro hook
+import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 
 export default function SignInForm() {
   // Estados para los campos del formulario
-  const [username, setUsername] = useState(''); // Cambiado de email a username
-  const [password, setPassword] = useState('');
+
+  const [username, setUsername] = useState<string>(''); // Cambiado de email a username
+  const [password, setPassword] = useState<string>(''); // Cambiado de email a username
   const [showPassword, setShowPassword] = useState(false);
 
   // Obtenemos la función de login y el estado de carga/error del hook

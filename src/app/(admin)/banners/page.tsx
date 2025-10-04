@@ -443,7 +443,6 @@ const BannerEditModal = ({
         isOpen={isStorySelectorOpen}
         onClose={() => setIsStorySelectorOpen(false)}
         onStorySelect={(story) => setFormData((p) => ({ ...p, story }))}
-        allStories={allStories}
       />
     </>
   );
