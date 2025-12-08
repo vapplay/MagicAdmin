@@ -1,0 +1,222 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../types/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+// --------------------------------------
+// ENUMS (Prisma los maneja internamente en SQLite)
+// --------------------------------------
+
+enum AssignmentStatus {
+  PENDING_PAYMENT
+  PROCESSING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum SubscriptionPlatform {
+  GOOGLE_PLAY
+  IOS_APP_STORE
+  STRIPE
+}
+
+// --------------------------------------
+// MODELOS PRINCIPALES
+// --------------------------------------
+
+model User {
+  id           String  @id @default(uuid())
+  name         String?
+  email        String  @unique
+  googleId     String? @unique
+  profileImage String?
+  pushToken    String?
+
+  // Suscripción Activa
+  isPremium      Boolean       @default(false)
+  premiumEnd     DateTime?
+  subscription   Subscription? @relation(fields: [subscriptionId], references: [id])
+  subscriptionId String? // Se quitó @db.ObjectId
+
+  // Compras de Cuentos
+  stories UserStory[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum SubscriptionInterval {
+  MONTHLY
+  QUARTERLY
+  SEMI_ANNUAL
+  ANNUAL
+}
+
+model Subscription {
+  id       String               @id @default(uuid())
+  platform SubscriptionPlatform @default(GOOGLE_PLAY)
+
+  // Datos de Google Play
+  purchaseToken String
+  orderId       String?
+  productId     String
+
+  interval SubscriptionInterval? // Newly added field
+
+  isActive     Boolean @default(true)
+  autoRenewing Boolean @default(true)
+
+  users User[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// EL CUENTO BASE
+model History {
+  id String @id @default(uuid())
+
+  // Metadatos visuales
+  name_es        String
+  name_en        String
+  name_pt        String?
+  description_es String
+  description_en String
+  description_pt String?
+  cover          String
+  poster         String?
+  youtube        String?
+  type           Int     @default(1)
+  song           String?
+
+  // Configuración
+  active          Boolean @default(false)
+  isPremium       Boolean @default(false)
+  googleProductId String?
+
+  // Colores
+  dominant     String?
+  average      String?
+  vibrant      String?
+  darkVibrant  String?
+  lightVibrant String?
+  darkMuted    String?
+  lightMuted   String?
+  muted        String?
+
+  // Relaciones
+  banners         AppBanners[]
+  purchases       UserStory[]
+  availableAudios PersonalizedAudio[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// LA COMPRA DEL USUARIO
+model UserStory {
+  id String @id @default(uuid())
+
+  // Relación Usuario
+  user   User   @relation(fields: [userId], references: [id])
+  userId String // Se quitó @db.ObjectId
+
+  // Relación Cuento
+  history   History @relation(fields: [historyId], references: [id])
+  historyId String // Se quitó @db.ObjectId
+
+  // EL NOMBRE PEDIDO
+  requestedName String
+
+  // Relación Audio
+  audio   PersonalizedAudio? @relation(fields: [audioId], references: [id])
+  audioId String? // Se quitó @db.ObjectId
+
+  // Datos de Google Play
+  purchaseToken String?
+  googleOrderId String?
+
+  // Estado del pedido
+  status AssignmentStatus @default(PENDING_PAYMENT)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// EL BANCO DE AUDIOS
+model PersonalizedAudio {
+  id String @id @default(uuid())
+
+  // Datos del archivo
+  url      String
+  duration Int?
+
+  // Metadatos
+  childName String
+
+  // Relación
+  history   History @relation(fields: [historyId], references: [id])
+  historyId String
+
+  // Relación inversa
+  assignedTo UserStory[]
+
+  createdAt DateTime @default(now())
+
+  @@unique([historyId, childName])
+}
+
+// --------------------------------------
+// CONFIGURACIÓN Y EXTRAS
+// --------------------------------------
+
+model Config {
+  id                     String  @id @default(uuid())
+  adsMasterSwitch        Boolean @default(true)
+  adsBannerEnabled       Boolean @default(true)
+  adsInterstitialEnabled Boolean @default(true)
+  loginMasterSwitch      Boolean @default(true)
+  googleLoginEnabled     Boolean @default(true)
+  facebookLoginEnabled   Boolean @default(false)
+  surprisesModuleEnabled Boolean @default(false)
+  forceUpdate            Boolean @default(false)
+  latestVersion          String  @default("1.0.0")
+  termsData              Json? // SQLite soporta JSON (como texto internamente)
+  adsLoginEnabled        Boolean @default(false)
+
+  // Custom Menu Titles
+  menuText1_es String @default("Inicio")
+  menuText1_en String @default("Home")
+  menuText1_pt String @default("Início")
+
+  menuText2_es String @default("Cuentos")
+  menuText2_en String @default("Stories")
+  menuText2_pt String @default("Histórias")
+
+  menuText3_es String @default("Perfil")
+  menuText3_en String @default("Profile")
+  menuText3_pt String @default("Perfil")
+}
+
+model AppBanners {
+  id          String  @id @default(uuid())
+  isPromo     Boolean @default(false)
+  title       String
+  description String
+  playImage   String?
+  externalUrl String?
+
+  historyId String?
+  history   History? @relation(fields: [historyId], references: [id])
+}
+
+model AdminUser {
+  id       String @id @default(uuid())
+  username String @unique
+  password String
+}
