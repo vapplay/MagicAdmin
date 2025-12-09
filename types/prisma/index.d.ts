@@ -7025,6 +7025,9 @@ export namespace Prisma {
     forceUpdate: number
     latestVersion: number
     termsData: number
+    termsData_es: number
+    termsData_en: number
+    termsData_pt: number
     adsLoginEnabled: number
     menuText1_es: number
     menuText1_en: number
@@ -7097,6 +7100,9 @@ export namespace Prisma {
     forceUpdate?: true
     latestVersion?: true
     termsData?: true
+    termsData_es?: true
+    termsData_en?: true
+    termsData_pt?: true
     adsLoginEnabled?: true
     menuText1_es?: true
     menuText1_en?: true
@@ -7194,6 +7200,9 @@ export namespace Prisma {
     forceUpdate: boolean
     latestVersion: string
     termsData: JsonValue | null
+    termsData_es: JsonValue | null
+    termsData_en: JsonValue | null
+    termsData_pt: JsonValue | null
     adsLoginEnabled: boolean
     menuText1_es: string
     menuText1_en: string
@@ -7235,6 +7244,9 @@ export namespace Prisma {
     forceUpdate?: boolean
     latestVersion?: boolean
     termsData?: boolean
+    termsData_es?: boolean
+    termsData_en?: boolean
+    termsData_pt?: boolean
     adsLoginEnabled?: boolean
     menuText1_es?: boolean
     menuText1_en?: boolean
@@ -7261,6 +7273,9 @@ export namespace Prisma {
     forceUpdate?: boolean
     latestVersion?: boolean
     termsData?: boolean
+    termsData_es?: boolean
+    termsData_en?: boolean
+    termsData_pt?: boolean
     adsLoginEnabled?: boolean
     menuText1_es?: boolean
     menuText1_en?: boolean
@@ -7273,7 +7288,7 @@ export namespace Prisma {
     menuText3_pt?: boolean
   }
 
-  export type ConfigOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "adsMasterSwitch" | "adsBannerEnabled" | "adsInterstitialEnabled" | "loginMasterSwitch" | "googleLoginEnabled" | "facebookLoginEnabled" | "surprisesModuleEnabled" | "forceUpdate" | "latestVersion" | "termsData" | "adsLoginEnabled" | "menuText1_es" | "menuText1_en" | "menuText1_pt" | "menuText2_es" | "menuText2_en" | "menuText2_pt" | "menuText3_es" | "menuText3_en" | "menuText3_pt", ExtArgs["result"]["config"]>
+  export type ConfigOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "adsMasterSwitch" | "adsBannerEnabled" | "adsInterstitialEnabled" | "loginMasterSwitch" | "googleLoginEnabled" | "facebookLoginEnabled" | "surprisesModuleEnabled" | "forceUpdate" | "latestVersion" | "termsData" | "termsData_es" | "termsData_en" | "termsData_pt" | "adsLoginEnabled" | "menuText1_es" | "menuText1_en" | "menuText1_pt" | "menuText2_es" | "menuText2_en" | "menuText2_pt" | "menuText3_es" | "menuText3_en" | "menuText3_pt", ExtArgs["result"]["config"]>
 
   export type $ConfigPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Config"
@@ -7290,6 +7305,9 @@ export namespace Prisma {
       forceUpdate: boolean
       latestVersion: string
       termsData: Prisma.JsonValue | null
+      termsData_es: Prisma.JsonValue | null
+      termsData_en: Prisma.JsonValue | null
+      termsData_pt: Prisma.JsonValue | null
       adsLoginEnabled: boolean
       menuText1_es: string
       menuText1_en: string
@@ -7680,6 +7698,9 @@ export namespace Prisma {
     readonly forceUpdate: FieldRef<"Config", 'Boolean'>
     readonly latestVersion: FieldRef<"Config", 'String'>
     readonly termsData: FieldRef<"Config", 'Json'>
+    readonly termsData_es: FieldRef<"Config", 'Json'>
+    readonly termsData_en: FieldRef<"Config", 'Json'>
+    readonly termsData_pt: FieldRef<"Config", 'Json'>
     readonly adsLoginEnabled: FieldRef<"Config", 'Boolean'>
     readonly menuText1_es: FieldRef<"Config", 'String'>
     readonly menuText1_en: FieldRef<"Config", 'String'>
@@ -8024,8 +8045,12 @@ export namespace Prisma {
   export type AppBannersMinAggregateOutputType = {
     id: string | null
     isPromo: boolean | null
-    title: string | null
-    description: string | null
+    title_es: string | null
+    title_en: string | null
+    title_pt: string | null
+    description_es: string | null
+    description_en: string | null
+    description_pt: string | null
     playImage: string | null
     externalUrl: string | null
     historyId: string | null
@@ -8034,8 +8059,12 @@ export namespace Prisma {
   export type AppBannersMaxAggregateOutputType = {
     id: string | null
     isPromo: boolean | null
-    title: string | null
-    description: string | null
+    title_es: string | null
+    title_en: string | null
+    title_pt: string | null
+    description_es: string | null
+    description_en: string | null
+    description_pt: string | null
     playImage: string | null
     externalUrl: string | null
     historyId: string | null
@@ -8044,8 +8073,12 @@ export namespace Prisma {
   export type AppBannersCountAggregateOutputType = {
     id: number
     isPromo: number
-    title: number
-    description: number
+    title_es: number
+    title_en: number
+    title_pt: number
+    description_es: number
+    description_en: number
+    description_pt: number
     playImage: number
     externalUrl: number
     historyId: number
@@ -8056,8 +8089,12 @@ export namespace Prisma {
   export type AppBannersMinAggregateInputType = {
     id?: true
     isPromo?: true
-    title?: true
-    description?: true
+    title_es?: true
+    title_en?: true
+    title_pt?: true
+    description_es?: true
+    description_en?: true
+    description_pt?: true
     playImage?: true
     externalUrl?: true
     historyId?: true
@@ -8066,8 +8103,12 @@ export namespace Prisma {
   export type AppBannersMaxAggregateInputType = {
     id?: true
     isPromo?: true
-    title?: true
-    description?: true
+    title_es?: true
+    title_en?: true
+    title_pt?: true
+    description_es?: true
+    description_en?: true
+    description_pt?: true
     playImage?: true
     externalUrl?: true
     historyId?: true
@@ -8076,8 +8117,12 @@ export namespace Prisma {
   export type AppBannersCountAggregateInputType = {
     id?: true
     isPromo?: true
-    title?: true
-    description?: true
+    title_es?: true
+    title_en?: true
+    title_pt?: true
+    description_es?: true
+    description_en?: true
+    description_pt?: true
     playImage?: true
     externalUrl?: true
     historyId?: true
@@ -8159,8 +8204,12 @@ export namespace Prisma {
   export type AppBannersGroupByOutputType = {
     id: string
     isPromo: boolean
-    title: string
-    description: string
+    title_es: string | null
+    title_en: string | null
+    title_pt: string | null
+    description_es: string | null
+    description_en: string | null
+    description_pt: string | null
     playImage: string | null
     externalUrl: string | null
     historyId: string | null
@@ -8186,8 +8235,12 @@ export namespace Prisma {
   export type AppBannersSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     isPromo?: boolean
-    title?: boolean
-    description?: boolean
+    title_es?: boolean
+    title_en?: boolean
+    title_pt?: boolean
+    description_es?: boolean
+    description_en?: boolean
+    description_pt?: boolean
     playImage?: boolean
     externalUrl?: boolean
     historyId?: boolean
@@ -8199,14 +8252,18 @@ export namespace Prisma {
   export type AppBannersSelectScalar = {
     id?: boolean
     isPromo?: boolean
-    title?: boolean
-    description?: boolean
+    title_es?: boolean
+    title_en?: boolean
+    title_pt?: boolean
+    description_es?: boolean
+    description_en?: boolean
+    description_pt?: boolean
     playImage?: boolean
     externalUrl?: boolean
     historyId?: boolean
   }
 
-  export type AppBannersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "isPromo" | "title" | "description" | "playImage" | "externalUrl" | "historyId", ExtArgs["result"]["appBanners"]>
+  export type AppBannersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "isPromo" | "title_es" | "title_en" | "title_pt" | "description_es" | "description_en" | "description_pt" | "playImage" | "externalUrl" | "historyId", ExtArgs["result"]["appBanners"]>
   export type AppBannersInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     history?: boolean | AppBanners$historyArgs<ExtArgs>
   }
@@ -8219,8 +8276,12 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       isPromo: boolean
-      title: string
-      description: string
+      title_es: string | null
+      title_en: string | null
+      title_pt: string | null
+      description_es: string | null
+      description_en: string | null
+      description_pt: string | null
       playImage: string | null
       externalUrl: string | null
       historyId: string | null
@@ -8596,8 +8657,12 @@ export namespace Prisma {
   interface AppBannersFieldRefs {
     readonly id: FieldRef<"AppBanners", 'String'>
     readonly isPromo: FieldRef<"AppBanners", 'Boolean'>
-    readonly title: FieldRef<"AppBanners", 'String'>
-    readonly description: FieldRef<"AppBanners", 'String'>
+    readonly title_es: FieldRef<"AppBanners", 'String'>
+    readonly title_en: FieldRef<"AppBanners", 'String'>
+    readonly title_pt: FieldRef<"AppBanners", 'String'>
+    readonly description_es: FieldRef<"AppBanners", 'String'>
+    readonly description_en: FieldRef<"AppBanners", 'String'>
+    readonly description_pt: FieldRef<"AppBanners", 'String'>
     readonly playImage: FieldRef<"AppBanners", 'String'>
     readonly externalUrl: FieldRef<"AppBanners", 'String'>
     readonly historyId: FieldRef<"AppBanners", 'String'>
@@ -8819,7 +8884,7 @@ export namespace Prisma {
     /**
      * The data needed to create a AppBanners.
      */
-    data: XOR<AppBannersCreateInput, AppBannersUncheckedCreateInput>
+    data?: XOR<AppBannersCreateInput, AppBannersUncheckedCreateInput>
   }
 
   /**
@@ -9959,6 +10024,9 @@ export namespace Prisma {
     forceUpdate: 'forceUpdate',
     latestVersion: 'latestVersion',
     termsData: 'termsData',
+    termsData_es: 'termsData_es',
+    termsData_en: 'termsData_en',
+    termsData_pt: 'termsData_pt',
     adsLoginEnabled: 'adsLoginEnabled',
     menuText1_es: 'menuText1_es',
     menuText1_en: 'menuText1_en',
@@ -9977,8 +10045,12 @@ export namespace Prisma {
   export const AppBannersScalarFieldEnum: {
     id: 'id',
     isPromo: 'isPromo',
-    title: 'title',
-    description: 'description',
+    title_es: 'title_es',
+    title_en: 'title_en',
+    title_pt: 'title_pt',
+    description_es: 'description_es',
+    description_en: 'description_en',
+    description_pt: 'description_pt',
     playImage: 'playImage',
     externalUrl: 'externalUrl',
     historyId: 'historyId'
@@ -10128,8 +10200,12 @@ export namespace Prisma {
 
   export const AppBannersOrderByRelevanceFieldEnum: {
     id: 'id',
-    title: 'title',
-    description: 'description',
+    title_es: 'title_es',
+    title_en: 'title_en',
+    title_pt: 'title_pt',
+    description_es: 'description_es',
+    description_en: 'description_en',
+    description_pt: 'description_pt',
     playImage: 'playImage',
     externalUrl: 'externalUrl',
     historyId: 'historyId'
@@ -10728,6 +10804,9 @@ export namespace Prisma {
     forceUpdate?: BoolFilter<"Config"> | boolean
     latestVersion?: StringFilter<"Config"> | string
     termsData?: JsonNullableFilter<"Config">
+    termsData_es?: JsonNullableFilter<"Config">
+    termsData_en?: JsonNullableFilter<"Config">
+    termsData_pt?: JsonNullableFilter<"Config">
     adsLoginEnabled?: BoolFilter<"Config"> | boolean
     menuText1_es?: StringFilter<"Config"> | string
     menuText1_en?: StringFilter<"Config"> | string
@@ -10752,6 +10831,9 @@ export namespace Prisma {
     forceUpdate?: SortOrder
     latestVersion?: SortOrder
     termsData?: SortOrderInput | SortOrder
+    termsData_es?: SortOrderInput | SortOrder
+    termsData_en?: SortOrderInput | SortOrder
+    termsData_pt?: SortOrderInput | SortOrder
     adsLoginEnabled?: SortOrder
     menuText1_es?: SortOrder
     menuText1_en?: SortOrder
@@ -10780,6 +10862,9 @@ export namespace Prisma {
     forceUpdate?: BoolFilter<"Config"> | boolean
     latestVersion?: StringFilter<"Config"> | string
     termsData?: JsonNullableFilter<"Config">
+    termsData_es?: JsonNullableFilter<"Config">
+    termsData_en?: JsonNullableFilter<"Config">
+    termsData_pt?: JsonNullableFilter<"Config">
     adsLoginEnabled?: BoolFilter<"Config"> | boolean
     menuText1_es?: StringFilter<"Config"> | string
     menuText1_en?: StringFilter<"Config"> | string
@@ -10804,6 +10889,9 @@ export namespace Prisma {
     forceUpdate?: SortOrder
     latestVersion?: SortOrder
     termsData?: SortOrderInput | SortOrder
+    termsData_es?: SortOrderInput | SortOrder
+    termsData_en?: SortOrderInput | SortOrder
+    termsData_pt?: SortOrderInput | SortOrder
     adsLoginEnabled?: SortOrder
     menuText1_es?: SortOrder
     menuText1_en?: SortOrder
@@ -10834,6 +10922,9 @@ export namespace Prisma {
     forceUpdate?: BoolWithAggregatesFilter<"Config"> | boolean
     latestVersion?: StringWithAggregatesFilter<"Config"> | string
     termsData?: JsonNullableWithAggregatesFilter<"Config">
+    termsData_es?: JsonNullableWithAggregatesFilter<"Config">
+    termsData_en?: JsonNullableWithAggregatesFilter<"Config">
+    termsData_pt?: JsonNullableWithAggregatesFilter<"Config">
     adsLoginEnabled?: BoolWithAggregatesFilter<"Config"> | boolean
     menuText1_es?: StringWithAggregatesFilter<"Config"> | string
     menuText1_en?: StringWithAggregatesFilter<"Config"> | string
@@ -10852,8 +10943,12 @@ export namespace Prisma {
     NOT?: AppBannersWhereInput | AppBannersWhereInput[]
     id?: StringFilter<"AppBanners"> | string
     isPromo?: BoolFilter<"AppBanners"> | boolean
-    title?: StringFilter<"AppBanners"> | string
-    description?: StringFilter<"AppBanners"> | string
+    title_es?: StringNullableFilter<"AppBanners"> | string | null
+    title_en?: StringNullableFilter<"AppBanners"> | string | null
+    title_pt?: StringNullableFilter<"AppBanners"> | string | null
+    description_es?: StringNullableFilter<"AppBanners"> | string | null
+    description_en?: StringNullableFilter<"AppBanners"> | string | null
+    description_pt?: StringNullableFilter<"AppBanners"> | string | null
     playImage?: StringNullableFilter<"AppBanners"> | string | null
     externalUrl?: StringNullableFilter<"AppBanners"> | string | null
     historyId?: StringNullableFilter<"AppBanners"> | string | null
@@ -10863,8 +10958,12 @@ export namespace Prisma {
   export type AppBannersOrderByWithRelationInput = {
     id?: SortOrder
     isPromo?: SortOrder
-    title?: SortOrder
-    description?: SortOrder
+    title_es?: SortOrderInput | SortOrder
+    title_en?: SortOrderInput | SortOrder
+    title_pt?: SortOrderInput | SortOrder
+    description_es?: SortOrderInput | SortOrder
+    description_en?: SortOrderInput | SortOrder
+    description_pt?: SortOrderInput | SortOrder
     playImage?: SortOrderInput | SortOrder
     externalUrl?: SortOrderInput | SortOrder
     historyId?: SortOrderInput | SortOrder
@@ -10878,8 +10977,12 @@ export namespace Prisma {
     OR?: AppBannersWhereInput[]
     NOT?: AppBannersWhereInput | AppBannersWhereInput[]
     isPromo?: BoolFilter<"AppBanners"> | boolean
-    title?: StringFilter<"AppBanners"> | string
-    description?: StringFilter<"AppBanners"> | string
+    title_es?: StringNullableFilter<"AppBanners"> | string | null
+    title_en?: StringNullableFilter<"AppBanners"> | string | null
+    title_pt?: StringNullableFilter<"AppBanners"> | string | null
+    description_es?: StringNullableFilter<"AppBanners"> | string | null
+    description_en?: StringNullableFilter<"AppBanners"> | string | null
+    description_pt?: StringNullableFilter<"AppBanners"> | string | null
     playImage?: StringNullableFilter<"AppBanners"> | string | null
     externalUrl?: StringNullableFilter<"AppBanners"> | string | null
     historyId?: StringNullableFilter<"AppBanners"> | string | null
@@ -10889,8 +10992,12 @@ export namespace Prisma {
   export type AppBannersOrderByWithAggregationInput = {
     id?: SortOrder
     isPromo?: SortOrder
-    title?: SortOrder
-    description?: SortOrder
+    title_es?: SortOrderInput | SortOrder
+    title_en?: SortOrderInput | SortOrder
+    title_pt?: SortOrderInput | SortOrder
+    description_es?: SortOrderInput | SortOrder
+    description_en?: SortOrderInput | SortOrder
+    description_pt?: SortOrderInput | SortOrder
     playImage?: SortOrderInput | SortOrder
     externalUrl?: SortOrderInput | SortOrder
     historyId?: SortOrderInput | SortOrder
@@ -10905,8 +11012,12 @@ export namespace Prisma {
     NOT?: AppBannersScalarWhereWithAggregatesInput | AppBannersScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"AppBanners"> | string
     isPromo?: BoolWithAggregatesFilter<"AppBanners"> | boolean
-    title?: StringWithAggregatesFilter<"AppBanners"> | string
-    description?: StringWithAggregatesFilter<"AppBanners"> | string
+    title_es?: StringNullableWithAggregatesFilter<"AppBanners"> | string | null
+    title_en?: StringNullableWithAggregatesFilter<"AppBanners"> | string | null
+    title_pt?: StringNullableWithAggregatesFilter<"AppBanners"> | string | null
+    description_es?: StringNullableWithAggregatesFilter<"AppBanners"> | string | null
+    description_en?: StringNullableWithAggregatesFilter<"AppBanners"> | string | null
+    description_pt?: StringNullableWithAggregatesFilter<"AppBanners"> | string | null
     playImage?: StringNullableWithAggregatesFilter<"AppBanners"> | string | null
     externalUrl?: StringNullableWithAggregatesFilter<"AppBanners"> | string | null
     historyId?: StringNullableWithAggregatesFilter<"AppBanners"> | string | null
@@ -11525,6 +11636,9 @@ export namespace Prisma {
     forceUpdate?: boolean
     latestVersion?: string
     termsData?: NullableJsonNullValueInput | InputJsonValue
+    termsData_es?: NullableJsonNullValueInput | InputJsonValue
+    termsData_en?: NullableJsonNullValueInput | InputJsonValue
+    termsData_pt?: NullableJsonNullValueInput | InputJsonValue
     adsLoginEnabled?: boolean
     menuText1_es?: string
     menuText1_en?: string
@@ -11549,6 +11663,9 @@ export namespace Prisma {
     forceUpdate?: boolean
     latestVersion?: string
     termsData?: NullableJsonNullValueInput | InputJsonValue
+    termsData_es?: NullableJsonNullValueInput | InputJsonValue
+    termsData_en?: NullableJsonNullValueInput | InputJsonValue
+    termsData_pt?: NullableJsonNullValueInput | InputJsonValue
     adsLoginEnabled?: boolean
     menuText1_es?: string
     menuText1_en?: string
@@ -11573,6 +11690,9 @@ export namespace Prisma {
     forceUpdate?: BoolFieldUpdateOperationsInput | boolean
     latestVersion?: StringFieldUpdateOperationsInput | string
     termsData?: NullableJsonNullValueInput | InputJsonValue
+    termsData_es?: NullableJsonNullValueInput | InputJsonValue
+    termsData_en?: NullableJsonNullValueInput | InputJsonValue
+    termsData_pt?: NullableJsonNullValueInput | InputJsonValue
     adsLoginEnabled?: BoolFieldUpdateOperationsInput | boolean
     menuText1_es?: StringFieldUpdateOperationsInput | string
     menuText1_en?: StringFieldUpdateOperationsInput | string
@@ -11597,6 +11717,9 @@ export namespace Prisma {
     forceUpdate?: BoolFieldUpdateOperationsInput | boolean
     latestVersion?: StringFieldUpdateOperationsInput | string
     termsData?: NullableJsonNullValueInput | InputJsonValue
+    termsData_es?: NullableJsonNullValueInput | InputJsonValue
+    termsData_en?: NullableJsonNullValueInput | InputJsonValue
+    termsData_pt?: NullableJsonNullValueInput | InputJsonValue
     adsLoginEnabled?: BoolFieldUpdateOperationsInput | boolean
     menuText1_es?: StringFieldUpdateOperationsInput | string
     menuText1_en?: StringFieldUpdateOperationsInput | string
@@ -11621,6 +11744,9 @@ export namespace Prisma {
     forceUpdate?: boolean
     latestVersion?: string
     termsData?: NullableJsonNullValueInput | InputJsonValue
+    termsData_es?: NullableJsonNullValueInput | InputJsonValue
+    termsData_en?: NullableJsonNullValueInput | InputJsonValue
+    termsData_pt?: NullableJsonNullValueInput | InputJsonValue
     adsLoginEnabled?: boolean
     menuText1_es?: string
     menuText1_en?: string
@@ -11645,6 +11771,9 @@ export namespace Prisma {
     forceUpdate?: BoolFieldUpdateOperationsInput | boolean
     latestVersion?: StringFieldUpdateOperationsInput | string
     termsData?: NullableJsonNullValueInput | InputJsonValue
+    termsData_es?: NullableJsonNullValueInput | InputJsonValue
+    termsData_en?: NullableJsonNullValueInput | InputJsonValue
+    termsData_pt?: NullableJsonNullValueInput | InputJsonValue
     adsLoginEnabled?: BoolFieldUpdateOperationsInput | boolean
     menuText1_es?: StringFieldUpdateOperationsInput | string
     menuText1_en?: StringFieldUpdateOperationsInput | string
@@ -11669,6 +11798,9 @@ export namespace Prisma {
     forceUpdate?: BoolFieldUpdateOperationsInput | boolean
     latestVersion?: StringFieldUpdateOperationsInput | string
     termsData?: NullableJsonNullValueInput | InputJsonValue
+    termsData_es?: NullableJsonNullValueInput | InputJsonValue
+    termsData_en?: NullableJsonNullValueInput | InputJsonValue
+    termsData_pt?: NullableJsonNullValueInput | InputJsonValue
     adsLoginEnabled?: BoolFieldUpdateOperationsInput | boolean
     menuText1_es?: StringFieldUpdateOperationsInput | string
     menuText1_en?: StringFieldUpdateOperationsInput | string
@@ -11684,8 +11816,12 @@ export namespace Prisma {
   export type AppBannersCreateInput = {
     id?: string
     isPromo?: boolean
-    title: string
-    description: string
+    title_es?: string | null
+    title_en?: string | null
+    title_pt?: string | null
+    description_es?: string | null
+    description_en?: string | null
+    description_pt?: string | null
     playImage?: string | null
     externalUrl?: string | null
     history?: HistoryCreateNestedOneWithoutBannersInput
@@ -11694,8 +11830,12 @@ export namespace Prisma {
   export type AppBannersUncheckedCreateInput = {
     id?: string
     isPromo?: boolean
-    title: string
-    description: string
+    title_es?: string | null
+    title_en?: string | null
+    title_pt?: string | null
+    description_es?: string | null
+    description_en?: string | null
+    description_pt?: string | null
     playImage?: string | null
     externalUrl?: string | null
     historyId?: string | null
@@ -11704,8 +11844,12 @@ export namespace Prisma {
   export type AppBannersUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     isPromo?: BoolFieldUpdateOperationsInput | boolean
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
+    title_es?: NullableStringFieldUpdateOperationsInput | string | null
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
+    title_pt?: NullableStringFieldUpdateOperationsInput | string | null
+    description_es?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
+    description_pt?: NullableStringFieldUpdateOperationsInput | string | null
     playImage?: NullableStringFieldUpdateOperationsInput | string | null
     externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
     history?: HistoryUpdateOneWithoutBannersNestedInput
@@ -11714,8 +11858,12 @@ export namespace Prisma {
   export type AppBannersUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     isPromo?: BoolFieldUpdateOperationsInput | boolean
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
+    title_es?: NullableStringFieldUpdateOperationsInput | string | null
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
+    title_pt?: NullableStringFieldUpdateOperationsInput | string | null
+    description_es?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
+    description_pt?: NullableStringFieldUpdateOperationsInput | string | null
     playImage?: NullableStringFieldUpdateOperationsInput | string | null
     externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
     historyId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -11724,8 +11872,12 @@ export namespace Prisma {
   export type AppBannersCreateManyInput = {
     id?: string
     isPromo?: boolean
-    title: string
-    description: string
+    title_es?: string | null
+    title_en?: string | null
+    title_pt?: string | null
+    description_es?: string | null
+    description_en?: string | null
+    description_pt?: string | null
     playImage?: string | null
     externalUrl?: string | null
     historyId?: string | null
@@ -11734,8 +11886,12 @@ export namespace Prisma {
   export type AppBannersUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     isPromo?: BoolFieldUpdateOperationsInput | boolean
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
+    title_es?: NullableStringFieldUpdateOperationsInput | string | null
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
+    title_pt?: NullableStringFieldUpdateOperationsInput | string | null
+    description_es?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
+    description_pt?: NullableStringFieldUpdateOperationsInput | string | null
     playImage?: NullableStringFieldUpdateOperationsInput | string | null
     externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -11743,8 +11899,12 @@ export namespace Prisma {
   export type AppBannersUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     isPromo?: BoolFieldUpdateOperationsInput | boolean
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
+    title_es?: NullableStringFieldUpdateOperationsInput | string | null
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
+    title_pt?: NullableStringFieldUpdateOperationsInput | string | null
+    description_es?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
+    description_pt?: NullableStringFieldUpdateOperationsInput | string | null
     playImage?: NullableStringFieldUpdateOperationsInput | string | null
     externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
     historyId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -12414,6 +12574,9 @@ export namespace Prisma {
     forceUpdate?: SortOrder
     latestVersion?: SortOrder
     termsData?: SortOrder
+    termsData_es?: SortOrder
+    termsData_en?: SortOrder
+    termsData_pt?: SortOrder
     adsLoginEnabled?: SortOrder
     menuText1_es?: SortOrder
     menuText1_en?: SortOrder
@@ -12512,8 +12675,12 @@ export namespace Prisma {
   export type AppBannersCountOrderByAggregateInput = {
     id?: SortOrder
     isPromo?: SortOrder
-    title?: SortOrder
-    description?: SortOrder
+    title_es?: SortOrder
+    title_en?: SortOrder
+    title_pt?: SortOrder
+    description_es?: SortOrder
+    description_en?: SortOrder
+    description_pt?: SortOrder
     playImage?: SortOrder
     externalUrl?: SortOrder
     historyId?: SortOrder
@@ -12522,8 +12689,12 @@ export namespace Prisma {
   export type AppBannersMaxOrderByAggregateInput = {
     id?: SortOrder
     isPromo?: SortOrder
-    title?: SortOrder
-    description?: SortOrder
+    title_es?: SortOrder
+    title_en?: SortOrder
+    title_pt?: SortOrder
+    description_es?: SortOrder
+    description_en?: SortOrder
+    description_pt?: SortOrder
     playImage?: SortOrder
     externalUrl?: SortOrder
     historyId?: SortOrder
@@ -12532,8 +12703,12 @@ export namespace Prisma {
   export type AppBannersMinOrderByAggregateInput = {
     id?: SortOrder
     isPromo?: SortOrder
-    title?: SortOrder
-    description?: SortOrder
+    title_es?: SortOrder
+    title_en?: SortOrder
+    title_pt?: SortOrder
+    description_es?: SortOrder
+    description_en?: SortOrder
+    description_pt?: SortOrder
     playImage?: SortOrder
     externalUrl?: SortOrder
     historyId?: SortOrder
@@ -13440,8 +13615,12 @@ export namespace Prisma {
   export type AppBannersCreateWithoutHistoryInput = {
     id?: string
     isPromo?: boolean
-    title: string
-    description: string
+    title_es?: string | null
+    title_en?: string | null
+    title_pt?: string | null
+    description_es?: string | null
+    description_en?: string | null
+    description_pt?: string | null
     playImage?: string | null
     externalUrl?: string | null
   }
@@ -13449,8 +13628,12 @@ export namespace Prisma {
   export type AppBannersUncheckedCreateWithoutHistoryInput = {
     id?: string
     isPromo?: boolean
-    title: string
-    description: string
+    title_es?: string | null
+    title_en?: string | null
+    title_pt?: string | null
+    description_es?: string | null
+    description_en?: string | null
+    description_pt?: string | null
     playImage?: string | null
     externalUrl?: string | null
   }
@@ -13549,8 +13732,12 @@ export namespace Prisma {
     NOT?: AppBannersScalarWhereInput | AppBannersScalarWhereInput[]
     id?: StringFilter<"AppBanners"> | string
     isPromo?: BoolFilter<"AppBanners"> | boolean
-    title?: StringFilter<"AppBanners"> | string
-    description?: StringFilter<"AppBanners"> | string
+    title_es?: StringNullableFilter<"AppBanners"> | string | null
+    title_en?: StringNullableFilter<"AppBanners"> | string | null
+    title_pt?: StringNullableFilter<"AppBanners"> | string | null
+    description_es?: StringNullableFilter<"AppBanners"> | string | null
+    description_en?: StringNullableFilter<"AppBanners"> | string | null
+    description_pt?: StringNullableFilter<"AppBanners"> | string | null
     playImage?: StringNullableFilter<"AppBanners"> | string | null
     externalUrl?: StringNullableFilter<"AppBanners"> | string | null
     historyId?: StringNullableFilter<"AppBanners"> | string | null
@@ -14287,8 +14474,12 @@ export namespace Prisma {
   export type AppBannersCreateManyHistoryInput = {
     id?: string
     isPromo?: boolean
-    title: string
-    description: string
+    title_es?: string | null
+    title_en?: string | null
+    title_pt?: string | null
+    description_es?: string | null
+    description_en?: string | null
+    description_pt?: string | null
     playImage?: string | null
     externalUrl?: string | null
   }
@@ -14316,8 +14507,12 @@ export namespace Prisma {
   export type AppBannersUpdateWithoutHistoryInput = {
     id?: StringFieldUpdateOperationsInput | string
     isPromo?: BoolFieldUpdateOperationsInput | boolean
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
+    title_es?: NullableStringFieldUpdateOperationsInput | string | null
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
+    title_pt?: NullableStringFieldUpdateOperationsInput | string | null
+    description_es?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
+    description_pt?: NullableStringFieldUpdateOperationsInput | string | null
     playImage?: NullableStringFieldUpdateOperationsInput | string | null
     externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -14325,8 +14520,12 @@ export namespace Prisma {
   export type AppBannersUncheckedUpdateWithoutHistoryInput = {
     id?: StringFieldUpdateOperationsInput | string
     isPromo?: BoolFieldUpdateOperationsInput | boolean
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
+    title_es?: NullableStringFieldUpdateOperationsInput | string | null
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
+    title_pt?: NullableStringFieldUpdateOperationsInput | string | null
+    description_es?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
+    description_pt?: NullableStringFieldUpdateOperationsInput | string | null
     playImage?: NullableStringFieldUpdateOperationsInput | string | null
     externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -14334,8 +14533,12 @@ export namespace Prisma {
   export type AppBannersUncheckedUpdateManyWithoutHistoryInput = {
     id?: StringFieldUpdateOperationsInput | string
     isPromo?: BoolFieldUpdateOperationsInput | boolean
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
+    title_es?: NullableStringFieldUpdateOperationsInput | string | null
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
+    title_pt?: NullableStringFieldUpdateOperationsInput | string | null
+    description_es?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
+    description_pt?: NullableStringFieldUpdateOperationsInput | string | null
     playImage?: NullableStringFieldUpdateOperationsInput | string | null
     externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }

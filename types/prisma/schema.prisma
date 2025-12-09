@@ -186,7 +186,10 @@ model Config {
   surprisesModuleEnabled Boolean @default(false)
   forceUpdate            Boolean @default(false)
   latestVersion          String  @default("1.0.0")
-  termsData              Json? // SQLite soporta JSON (como texto internamente)
+  termsData              Json? // DEPRECATED: Use language specific fields
+  termsData_es           Json?
+  termsData_en           Json?
+  termsData_pt           Json?
   adsLoginEnabled        Boolean @default(false)
 
   // Custom Menu Titles
@@ -204,12 +207,16 @@ model Config {
 }
 
 model AppBanners {
-  id          String  @id @default(uuid())
-  isPromo     Boolean @default(false)
-  title       String
-  description String
-  playImage   String?
-  externalUrl String?
+  id             String  @id @default(uuid())
+  isPromo        Boolean @default(false)
+  title_es       String?
+  title_en       String?
+  title_pt       String?
+  description_es String?
+  description_en String?
+  description_pt String?
+  playImage      String?
+  externalUrl    String?
 
   historyId String?
   history   History? @relation(fields: [historyId], references: [id])

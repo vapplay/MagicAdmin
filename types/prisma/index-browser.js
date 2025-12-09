@@ -209,6 +209,9 @@ exports.Prisma.ConfigScalarFieldEnum = {
   forceUpdate: 'forceUpdate',
   latestVersion: 'latestVersion',
   termsData: 'termsData',
+  termsData_es: 'termsData_es',
+  termsData_en: 'termsData_en',
+  termsData_pt: 'termsData_pt',
   adsLoginEnabled: 'adsLoginEnabled',
   menuText1_es: 'menuText1_es',
   menuText1_en: 'menuText1_en',
@@ -224,8 +227,12 @@ exports.Prisma.ConfigScalarFieldEnum = {
 exports.Prisma.AppBannersScalarFieldEnum = {
   id: 'id',
   isPromo: 'isPromo',
-  title: 'title',
-  description: 'description',
+  title_es: 'title_es',
+  title_en: 'title_en',
+  title_pt: 'title_pt',
+  description_es: 'description_es',
+  description_en: 'description_en',
+  description_pt: 'description_pt',
   playImage: 'playImage',
   externalUrl: 'externalUrl',
   historyId: 'historyId'
@@ -336,8 +343,12 @@ exports.Prisma.ConfigOrderByRelevanceFieldEnum = {
 
 exports.Prisma.AppBannersOrderByRelevanceFieldEnum = {
   id: 'id',
-  title: 'title',
-  description: 'description',
+  title_es: 'title_es',
+  title_en: 'title_en',
+  title_pt: 'title_pt',
+  description_es: 'description_es',
+  description_en: 'description_en',
+  description_pt: 'description_pt',
   playImage: 'playImage',
   externalUrl: 'externalUrl',
   historyId: 'historyId'
