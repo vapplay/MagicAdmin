@@ -124,7 +124,7 @@ const AdvancedAudioPlayer = ({
     const [duration, setDuration] = useState(0);
     const isPlaying = currentPlayingId === id;
 
-    const fullUrl = url.startsWith('http') ? url : `${SONG_URL}${url}`;
+    const fullUrl = url.startsWith('http') ? url : `${SONG_URL.es}${url}`;
 
     useEffect(() => {
         if (isPlaying) {
@@ -478,12 +478,14 @@ function DeleteConfirmationModal({
     isOpen,
     onClose,
     onConfirm,
-    audioName
+    audioName,
+    isLoading
 }: {
     isOpen: boolean;
     onClose: () => void;
     onConfirm: () => void;
     audioName: string;
+    isLoading: boolean;
 }) {
     const [confirmText, setConfirmText] = useState("");
     const isConfirmed = confirmText === "ELIMINAR";
@@ -520,11 +522,11 @@ function DeleteConfirmationModal({
                     <Button
                         variant="destructive"
                         onClick={onConfirm}
-                        disabled={!isConfirmed}
+                        disabled={!isConfirmed || isLoading}
                         className="gap-2"
                     >
-                        <Trash2 className="h-4 w-4" />
-                        Eliminar Definitivamente
+                        {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+                        {isLoading ? 'Eliminando...' : 'Eliminar Definitivamente'}
                     </Button>
                 </DialogFooter>
             </DialogContent>
@@ -1177,7 +1179,7 @@ export default function CustomStoriesPage() {
             {/* --- MODALS --- */}
             {/* Create Audio Modal */}
             <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent className="sm:min-w-[425px]">
                     <DialogHeader>
                         <DialogTitle>Nuevo Cuento Personalizado</DialogTitle>
                         <DialogDescription>
@@ -1225,8 +1227,14 @@ export default function CustomStoriesPage() {
                         </div>
 
                         <DialogFooter>
+                            <Button type="button" variant="outline" onClick={() => setIsCreateModalOpen(false)}>Cancelar</Button>
                             <Button type="submit" disabled={createAudioMutation.isPending}>
-                                {createAudioMutation.isPending ? 'Guardando...' : 'Guardar Audio'}
+                                {createAudioMutation.isPending ? (
+                                    <>
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                        Guardando...
+                                    </>
+                                ) : 'Guardar Audio'}
                             </Button>
                         </DialogFooter>
                     </form>
@@ -1288,7 +1296,12 @@ export default function CustomStoriesPage() {
                         <DialogFooter>
                             <Button type="button" variant="outline" onClick={() => setIsEditModalOpen(false)}>Cancelar</Button>
                             <Button type="submit" disabled={updateAudioMutation.isPending}>
-                                {updateAudioMutation.isPending ? 'Guardando...' : 'Guardar Cambios'}
+                                {updateAudioMutation.isPending ? (
+                                    <>
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                        Guardando...
+                                    </>
+                                ) : 'Guardar Cambios'}
                             </Button>
                         </DialogFooter>
                     </form>
@@ -1406,6 +1419,7 @@ export default function CustomStoriesPage() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={() => audioToDelete && deleteAudioMutation.mutate(audioToDelete.id)}
                 audioName={audioToDelete?.name || ""}
+                isLoading={deleteAudioMutation.isPending}
             />
         </div >
     );

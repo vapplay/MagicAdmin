@@ -135,9 +135,15 @@ export default function ConfigPage() {
         surprisesModuleEnabled: false
     });
 
-    const [termsSections, setTermsSections] = useState<TermSection[]>([]);
-    const [termsVersion, setTermsVersion] = useState("1.0");
+    const [termsLang, setTermsLang] = useState<'es' | 'en' | 'pt'>('es');
+    const [termsDataMap, setTermsDataMap] = useState<Record<'es' | 'en' | 'pt', { version: string, sections: TermSection[] }>>({
+        es: { version: "1.0", sections: [] },
+        en: { version: "1.0", sections: [] },
+        pt: { version: "1.0", sections: [] }
+    });
     const [activeSectionIndex, setActiveSectionIndex] = useState(0);
+
+    const currentTerms = termsDataMap[termsLang];
 
     useEffect(() => {
         if (config) {
@@ -168,17 +174,24 @@ export default function ConfigPage() {
                 surprisesModuleEnabled: config.surprisesModuleEnabled ?? false,
             });
 
-            if (config.termsData) {
+
+            // Load Terms
+            const parseTerms = (data: any) => {
+                if (!data) return { version: "1.0", sections: [] };
                 try {
-                    const data = config.termsData;
-                    setTermsVersion(data.version || "1.0");
-                    if (Array.isArray(data.sections)) {
-                        setTermsSections(data.sections);
-                    } else if (typeof data.content === 'string') {
-                        setTermsSections([{ title: "General", content: data.content }]);
-                    }
-                } catch (e) { setTermsSections([]); }
-            }
+                    return {
+                        version: data.version || "1.0",
+                        sections: Array.isArray(data.sections) ? data.sections :
+                            (typeof data.content === 'string' ? [{ title: "General", content: data.content }] : [])
+                    };
+                } catch { return { version: "1.0", sections: [] }; }
+            };
+
+            setTermsDataMap({
+                es: parseTerms(config.termsData_es || config.termsData), // Fallback to legacy
+                en: parseTerms(config.termsData_en),
+                pt: parseTerms(config.termsData_pt)
+            });
         }
     }, [config]);
 
@@ -187,26 +200,43 @@ export default function ConfigPage() {
     };
 
     // Terms Helpers
+    const updateCurrentTerms = (updates: Partial<{ version: string, sections: TermSection[] }>) => {
+        setTermsDataMap(prev => ({
+            ...prev,
+            [termsLang]: { ...prev[termsLang], ...updates }
+        }));
+    };
+
     const addSection = () => {
-        const newSections = [...termsSections, { title: "", content: "" }];
-        setTermsSections(newSections);
+        const newSections = [...currentTerms.sections, { title: "", content: "" }];
+        updateCurrentTerms({ sections: newSections });
         setActiveSectionIndex(newSections.length - 1);
     };
+
     const removeSection = (index: number) => {
-        const newSections = termsSections.filter((_, i) => i !== index);
-        setTermsSections(newSections);
+        const newSections = currentTerms.sections.filter((_, i) => i !== index);
+        updateCurrentTerms({ sections: newSections });
         setActiveSectionIndex(prev => Math.max(0, Math.min(prev, newSections.length - 1)));
     };
+
     const updateSection = (index: number, field: keyof TermSection, value: string) => {
-        const newSections = [...termsSections];
-        newSections[index][field] = value;
-        setTermsSections(newSections);
+        const newSections = [...currentTerms.sections];
+        newSections[index] = { ...newSections[index], [field]: value };
+        updateCurrentTerms({ sections: newSections });
+    };
+
+    const setTermsVersion = (version: string) => {
+        updateCurrentTerms({ version });
     };
 
     const handleSave = () => {
         updateConfigMutation.mutate({
             ...formData,
-            termsData: { version: termsVersion, sections: termsSections }
+            termsData_es: termsDataMap.es,
+            termsData_en: termsDataMap.en,
+            termsData_pt: termsDataMap.pt,
+            // Legacy/Fallback update for older app versions if active language is ES
+            termsData: termsDataMap.es
         });
     };
 
@@ -443,85 +473,118 @@ export default function ConfigPage() {
                             </TabsContent>
 
                             {/* TERMS - Editor Estilo Documento */}
-                            <TabsContent value="terms" className="mt-0 h-[600px] flex gap-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                            <TabsContent value="terms" className="mt-0 h-[650px] flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
 
-                                {/* Lista Lateral */}
-                                <div className="w-64 shrink-0 flex flex-col gap-3">
-                                    <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 flex flex-col h-full">
-                                        <div className="flex items-center justify-between mb-4 pl-2">
-                                            <span className="text-xs font-bold uppercase text-slate-400 tracking-wider">Secciones</span>
-                                            <Button variant="ghost" size="icon" onClick={addSection} className="h-6 w-6 text-violet-600 hover:bg-violet-50 rounded-full">
-                                                <Plus className="w-4 h-4" />
-                                            </Button>
-                                        </div>
-
-                                        <div className="flex-1 overflow-y-auto space-y-2 pr-1 custom-scrollbar">
-                                            {termsSections.map((section, idx) => (
-                                                <button
-                                                    key={idx}
-                                                    onClick={() => setActiveSectionIndex(idx)}
-                                                    className={cn(
-                                                        "w-full text-left px-3 py-2.5 text-sm rounded-lg transition-all flex items-center justify-between group",
-                                                        activeSectionIndex === idx
-                                                            ? "bg-violet-600 text-white shadow-md shadow-violet-200"
-                                                            : "bg-slate-50 text-slate-600 hover:bg-slate-100"
-                                                    )}
-                                                >
-                                                    <span className="truncate font-medium">{section.title || `Nueva Sección ${idx + 1}`}</span>
-                                                    {activeSectionIndex === idx && <Sparkles className="w-3 h-3 text-violet-200" />}
-                                                </button>
-                                            ))}
-                                        </div>
-
-                                        <div className="pt-4 mt-4 border-t border-slate-100">
-                                            <label className="text-[10px] uppercase text-slate-400 font-bold block mb-1.5 ml-1">Versión del Documento</label>
-                                            <Input
-                                                value={termsVersion}
-                                                onChange={(e) => setTermsVersion(e.target.value)}
-                                                className="h-8 text-xs bg-slate-50 border-slate-200 focus-visible:ring-violet-500"
-                                                placeholder="v1.0"
-                                            />
-                                        </div>
+                                {/* Language Selector for Terms */}
+                                <div className="flex justify-center">
+                                    <div className="bg-white border border-slate-200 p-1 rounded-lg inline-flex shadow-sm">
+                                        {(['es', 'en', 'pt'] as const).map((lang) => (
+                                            <button
+                                                key={lang}
+                                                onClick={() => {
+                                                    setTermsLang(lang);
+                                                    setActiveSectionIndex(0);
+                                                }}
+                                                className={cn(
+                                                    "px-4 py-1.5 text-sm font-medium rounded-md transition-all flex items-center gap-2",
+                                                    termsLang === lang
+                                                        ? "bg-violet-600 text-white shadow-sm"
+                                                        : "text-slate-500 hover:text-slate-700 hover:bg-slate-50"
+                                                )}
+                                            >
+                                                <span>{lang === 'es' ? 'Español' : lang === 'en' ? 'Inglés' : 'Portugués'}</span>
+                                            </button>
+                                        ))}
                                     </div>
                                 </div>
 
-                                {/* Editor Principal */}
-                                <div className="flex-1 bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden flex flex-col relative">
-                                    {termsSections.length > 0 && activeSectionIndex < termsSections.length ? (
-                                        <>
-                                            <div className="h-16 border-b border-slate-100 flex items-center px-6 justify-between shrink-0 bg-white/50 backdrop-blur-sm">
-                                                <Input
-                                                    className="text-lg font-bold border-0 bg-transparent shadow-none px-0 focus-visible:ring-0 placeholder:text-slate-300 w-2/3 text-slate-800"
-                                                    value={termsSections[activeSectionIndex].title}
-                                                    onChange={(e) => updateSection(activeSectionIndex, "title", e.target.value)}
-                                                    placeholder="Título de la sección..."
-                                                />
-                                                <Button
-                                                    variant="ghost"
-                                                    size="sm"
-                                                    className="text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-full"
-                                                    onClick={() => removeSection(activeSectionIndex)}
-                                                >
-                                                    <Trash2 className="w-4 h-4" />
+                                <div className="flex-1 flex gap-6 min-h-0">
+                                    {/* Lista Lateral */}
+                                    <div className="w-64 shrink-0 flex flex-col gap-3">
+                                        <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 flex flex-col h-full">
+                                            <div className="flex items-center justify-between mb-4 pl-2">
+                                                <span className="text-xs font-bold uppercase text-slate-400 tracking-wider">Secciones ({termsLang.toUpperCase()})</span>
+                                                <Button variant="ghost" size="icon" onClick={addSection} className="h-6 w-6 text-violet-600 hover:bg-violet-50 rounded-full">
+                                                    <Plus className="w-4 h-4" />
                                                 </Button>
                                             </div>
-                                            <div className="flex-1 p-0 bg-slate-50/30">
-                                                <Textarea
-                                                    className="w-full h-full resize-none border-0 bg-transparent shadow-none focus-visible:ring-0 p-8 leading-relaxed text-sm text-slate-600 font-normal"
-                                                    value={termsSections[activeSectionIndex].content}
-                                                    onChange={(e) => updateSection(activeSectionIndex, "content", e.target.value)}
-                                                    placeholder="Escribe el contenido legal aquí..."
+
+                                            <div className="flex-1 overflow-y-auto space-y-2 pr-1 custom-scrollbar">
+                                                {currentTerms.sections.map((section, idx) => (
+                                                    <button
+                                                        key={idx}
+                                                        onClick={() => setActiveSectionIndex(idx)}
+                                                        className={cn(
+                                                            "w-full text-left px-3 py-2.5 text-sm rounded-lg transition-all flex items-center justify-between group",
+                                                            activeSectionIndex === idx
+                                                                ? "bg-violet-600 text-white shadow-md shadow-violet-200"
+                                                                : "bg-slate-50 text-slate-600 hover:bg-slate-100"
+                                                        )}
+                                                    >
+                                                        <span className="truncate font-medium">{section.title || `Nueva Sección ${idx + 1}`}</span>
+                                                        {activeSectionIndex === idx && <Sparkles className="w-3 h-3 text-violet-200" />}
+                                                    </button>
+                                                ))}
+                                                {currentTerms.sections.length === 0 && (
+                                                    <div className="text-center py-8 text-xs text-slate-400 italic">
+                                                        No hay secciones creadas
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                            <div className="pt-4 mt-4 border-t border-slate-100">
+                                                <label className="text-[10px] uppercase text-slate-400 font-bold block mb-1.5 ml-1">Versión del Documento</label>
+                                                <Input
+                                                    value={currentTerms.version}
+                                                    onChange={(e) => setTermsVersion(e.target.value)}
+                                                    className="h-8 text-xs bg-slate-50 border-slate-200 focus-visible:ring-violet-500"
+                                                    placeholder="v1.0"
                                                 />
                                             </div>
-                                        </>
-                                    ) : (
-                                        <div className="flex flex-col items-center justify-center h-full text-slate-300 gap-3">
-                                            <div className="p-4 bg-slate-50 rounded-full">
-                                                <Layout className="w-8 h-8 stroke-1 text-slate-400" />
-                                            </div>
-                                            <p className="text-sm font-medium">Selecciona o crea una sección</p>
                                         </div>
-                                    )}
+                                    </div>
+
+                                    {/* Editor Principal */}
+                                    <div className="flex-1 bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden flex flex-col relative">
+                                        {currentTerms.sections.length > 0 && activeSectionIndex < currentTerms.sections.length ? (
+                                            <>
+                                                <div className="h-16 border-b border-slate-100 flex items-center px-6 justify-between shrink-0 bg-white/50 backdrop-blur-sm">
+                                                    <Input
+                                                        className="text-lg font-bold border-0 bg-transparent shadow-none px-0 focus-visible:ring-0 placeholder:text-slate-300 w-2/3 text-slate-800"
+                                                        value={currentTerms.sections[activeSectionIndex].title}
+                                                        onChange={(e) => updateSection(activeSectionIndex, "title", e.target.value)}
+                                                        placeholder="Título de la sección..."
+                                                    />
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="sm"
+                                                        className="text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-full"
+                                                        onClick={() => removeSection(activeSectionIndex)}
+                                                    >
+                                                        <Trash2 className="w-4 h-4" />
+                                                    </Button>
+                                                </div>
+                                                <div className="flex-1 p-0 bg-slate-50/30">
+                                                    <Textarea
+                                                        className="w-full h-full resize-none border-0 bg-transparent shadow-none focus-visible:ring-0 p-8 leading-relaxed text-sm text-slate-600 font-normal"
+                                                        value={currentTerms.sections[activeSectionIndex].content}
+                                                        onChange={(e) => updateSection(activeSectionIndex, "content", e.target.value)}
+                                                        placeholder={`Escribe el contenido legal en ${termsLang === 'es' ? 'Español' : termsLang === 'en' ? 'Inglés' : 'Portugués'} aquí...`}
+                                                    />
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <div className="flex flex-col items-center justify-center h-full text-slate-300 gap-3">
+                                                <div className="p-4 bg-slate-50 rounded-full">
+                                                    <Layout className="w-8 h-8 stroke-1 text-slate-400" />
+                                                </div>
+                                                <p className="text-sm font-medium">Selecciona una sección para editar</p>
+                                                <Button variant="outline" size="sm" onClick={addSection}>
+                                                    Crear primera sección
+                                                </Button>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             </TabsContent>
                         </div>

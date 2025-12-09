@@ -20,8 +20,12 @@ import { Badge } from "@/components/ui/badge";
 export interface HistoryModel {
     id: string;
     name_es: string;
+    name_en: string;
+    name_pt?: string;
     cover: string;
     description_es: string;
+    description_en: string;
+    description_pt?: string;
     isPremium: boolean;
     type: number;
 }

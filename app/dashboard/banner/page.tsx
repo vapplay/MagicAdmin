@@ -47,8 +47,12 @@ import { StorySelectorModal, HistoryModel } from '@/components/history/StorySele
 
 interface Banner {
     id: string;
-    title?: string | null;
-    description?: string | null;
+    title_es?: string | null;
+    title_en?: string | null;
+    title_pt?: string | null;
+    description_es?: string | null;
+    description_en?: string | null;
+    description_pt?: string | null;
     isPromo: boolean;
     playImage?: string | null;
     externalUrl?: string | null;
@@ -194,8 +198,12 @@ const BannerEditModal = ({
     const handleSave = () => {
         const dataToSend = new FormData();
 
-        dataToSend.append('title', formData.title || '');
-        dataToSend.append('description', formData.description || '');
+        dataToSend.append('title_es', formData.title_es || '');
+        dataToSend.append('title_en', formData.title_en || '');
+        dataToSend.append('title_pt', formData.title_pt || '');
+        dataToSend.append('description_es', formData.description_es || '');
+        dataToSend.append('description_en', formData.description_en || '');
+        dataToSend.append('description_pt', formData.description_pt || '');
         dataToSend.append('isPromo', String(formData.isPromo || false));
 
         // Si el tipo es promo
@@ -234,7 +242,7 @@ const BannerEditModal = ({
     return (
         <>
             <Dialog open={isOpen} onOpenChange={onClose}>
-                <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                <DialogContent className="min-w-4xl max-h-[90vh] overflow-y-auto">
                     <DialogHeader>
                         <DialogTitle>{banner ? 'Editar Banner' : 'Crear Nuevo Banner'}</DialogTitle>
                         <DialogDescription>Completa la información del banner.</DialogDescription>
@@ -303,43 +311,106 @@ const BannerEditModal = ({
                                             )}
                                         </div>
                                     </div>
-                                    <div className="space-y-2">
-                                        <Label>Título Personalizado (Opcional)</Label>
-                                        <Input
-                                            value={formData.title || ''}
-                                            onChange={(e) => setFormData((p) => ({ ...p, title: e.target.value }))}
-                                            placeholder={formData.story?.name_es || 'Se usará el título del cuento'}
-                                        />
+
+                                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                                        <div className="space-y-2">
+                                            <Label>Título (ES)</Label>
+                                            <Input
+                                                value={formData.title_es || ''}
+                                                onChange={(e) => setFormData((p) => ({ ...p, title_es: e.target.value }))}
+                                                placeholder={formData.story?.name_es || 'Título en Español'}
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label>Título (EN)</Label>
+                                            <Input
+                                                value={formData.title_en || ''}
+                                                onChange={(e) => setFormData((p) => ({ ...p, title_en: e.target.value }))}
+                                                placeholder={formData.story?.name_en || 'English Title'}
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label>Título (PT)</Label>
+                                            <Input
+                                                value={formData.title_pt || ''}
+                                                onChange={(e) => setFormData((p) => ({ ...p, title_pt: e.target.value }))}
+                                                placeholder={formData.story?.name_pt || 'Título em Português'}
+                                            />
+                                        </div>
                                     </div>
-                                    <div className="space-y-2">
-                                        <Label>Descripción Personalizada (Opcional)</Label>
-                                        <Textarea
-                                            value={formData.description || ''}
-                                            onChange={(e) => setFormData((p) => ({ ...p, description: e.target.value }))}
-                                            placeholder={
-                                                formData.story?.description_es || 'Se usará la descripción del cuento'
-                                            }
-                                        />
+                                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                                        <div className="space-y-2">
+                                            <Label>Descripción (ES)</Label>
+                                            <Textarea
+                                                value={formData.description_es || ''}
+                                                onChange={(e) => setFormData((p) => ({ ...p, description_es: e.target.value }))}
+                                                placeholder={formData.story?.description_es || 'Descripción en Español'}
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label>Description (EN)</Label>
+                                            <Textarea
+                                                value={formData.description_en || ''}
+                                                onChange={(e) => setFormData((p) => ({ ...p, description_en: e.target.value }))}
+                                                placeholder={formData.story?.description_en || 'English Description'}
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label>Descrição (PT)</Label>
+                                            <Textarea
+                                                value={formData.description_pt || ''}
+                                                onChange={(e) => setFormData((p) => ({ ...p, description_pt: e.target.value }))}
+                                                placeholder={formData.story?.description_pt || 'Descrição em Português'}
+                                            />
+                                        </div>
                                     </div>
                                 </>
                             )}
                             {bannerType === 'promo' && (
                                 <div className="space-y-4">
-                                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                                         <div className="space-y-2">
-                                            <Label>Título</Label>
+                                            <Label>Título (ES)</Label>
                                             <Input
-                                                value={formData.title || ''}
-                                                onChange={(e) => setFormData((p) => ({ ...p, title: e.target.value }))}
+                                                value={formData.title_es || ''}
+                                                onChange={(e) => setFormData((p) => ({ ...p, title_es: e.target.value }))}
                                             />
                                         </div>
                                         <div className="space-y-2">
-                                            <Label>Descripción</Label>
+                                            <Label>Título (EN)</Label>
                                             <Input
-                                                value={formData.description || ''}
-                                                onChange={(e) =>
-                                                    setFormData((p) => ({ ...p, description: e.target.value }))
-                                                }
+                                                value={formData.title_en || ''}
+                                                onChange={(e) => setFormData((p) => ({ ...p, title_en: e.target.value }))}
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label>Título (PT)</Label>
+                                            <Input
+                                                value={formData.title_pt || ''}
+                                                onChange={(e) => setFormData((p) => ({ ...p, title_pt: e.target.value }))}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                                        <div className="space-y-2">
+                                            <Label>Descripción (ES)</Label>
+                                            <Input
+                                                value={formData.description_es || ''}
+                                                onChange={(e) => setFormData((p) => ({ ...p, description_es: e.target.value }))}
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label>Description (EN)</Label>
+                                            <Input
+                                                value={formData.description_en || ''}
+                                                onChange={(e) => setFormData((p) => ({ ...p, description_en: e.target.value }))}
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label>Descrição (PT)</Label>
+                                            <Input
+                                                value={formData.description_pt || ''}
+                                                onChange={(e) => setFormData((p) => ({ ...p, description_pt: e.target.value }))}
                                             />
                                         </div>
                                     </div>
@@ -523,13 +594,13 @@ export default function BannersPage() {
     const getBannerData = (banner: Banner) => {
         if (banner.isPromo)
             return {
-                title: banner.title || 'Banner Promocional',
-                description: banner.description || '',
+                title: banner.title_es || 'Banner Promocional',
+                description: banner.description_es || '',
                 image: banner.playImage ? (banner.playImage.startsWith('http') ? banner.playImage : `${IMAGE_URL}${banner.playImage}`) : '/placeholder.png',
             };
         return {
-            title: banner.title || banner.history?.name_es || 'Cuento...',
-            description: banner.description || banner.history?.description_es || '',
+            title: banner.title_es || banner.history?.name_es || 'Cuento...',
+            description: banner.description_es || banner.history?.description_es || '',
             image: banner.history?.cover ? `${IMAGE_URL}${banner.history.cover}` : '/placeholder.png',
         };
     };

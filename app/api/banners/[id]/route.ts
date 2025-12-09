@@ -30,16 +30,25 @@ export async function PUT(
         const id = (await params).id;
         const formData = await request.formData();
 
-        const title = formData.get('title')?.toString();
-        const description = formData.get('description')?.toString();
+        const title_es = formData.get('title_es')?.toString();
+        const title_en = formData.get('title_en')?.toString();
+        const title_pt = formData.get('title_pt')?.toString();
+        const description_es = formData.get('description_es')?.toString();
+        const description_en = formData.get('description_en')?.toString();
+        const description_pt = formData.get('description_pt')?.toString();
+
         const isPromoStr = formData.get('isPromo');
         const externalUrl = formData.get('externalUrl')?.toString();
         const historyId = formData.get('historyId')?.toString();
 
         const dataToUpdate: any = {};
 
-        if (title !== undefined) dataToUpdate.title = title;
-        if (description !== undefined) dataToUpdate.description = description;
+        if (title_es !== undefined) dataToUpdate.title_es = title_es || null;
+        if (title_en !== undefined) dataToUpdate.title_en = title_en || null;
+        if (title_pt !== undefined) dataToUpdate.title_pt = title_pt || null;
+        if (description_es !== undefined) dataToUpdate.description_es = description_es || null;
+        if (description_en !== undefined) dataToUpdate.description_en = description_en || null;
+        if (description_pt !== undefined) dataToUpdate.description_pt = description_pt || null;
         if (isPromoStr !== null) dataToUpdate.isPromo = isPromoStr === 'true';
         if (externalUrl !== undefined) dataToUpdate.externalUrl = externalUrl || null;
 

@@ -57,6 +57,7 @@ export async function GET(request: NextRequest) {
             const userStories = user.stories.map(us => ({
                 id: us.id,
                 title: us.history?.name_es || "Cuento sin título",
+                cover: us.history?.cover || null,
                 date: us.createdAt.toISOString().split('T')[0]
             }));
 

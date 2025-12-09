@@ -12,6 +12,14 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
+import {
     Sheet,
     SheetContent,
     SheetDescription,
@@ -24,7 +32,6 @@ import {
     AvatarFallback,
     AvatarImage,
 } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -48,8 +55,8 @@ import {
     ChevronRight,
     User as UserIcon,
     Calendar as CalendarIcon,
-    Plus,
     Trash2,
+    Loader2
 } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -57,8 +64,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
-import { addDays, format, isWithinInterval, startOfDay, endOfDay } from "date-fns";
-import { es } from "date-fns/locale";
+import { format, isWithinInterval, startOfDay, endOfDay } from "date-fns";
 import { cn } from "@/lib/utils";
 import { DateRange } from "react-day-picker";
 
@@ -69,6 +75,7 @@ type Story = {
     id: string;
     title: string;
     date: string;
+    cover?: string;
 };
 
 type MembershipType = "MONTHLY" | "QUARTERLY" | "ANNUAL" | "NONE";
@@ -86,6 +93,9 @@ type User = {
     premiumSince?: string;
 };
 
+// --- Constants ---
+const IMAGE_URL = 'https://pub-233a13519c3c4e18a1d97e37666c5297.r2.dev/';
+
 export default function UsersPage() {
     // Filters
     const [filterName, setFilterName] = useState("");
@@ -100,6 +110,11 @@ export default function UsersPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [localData, setLocalData] = useState<User[]>([]);
+
+    // Delete Story State
+    const [storyToDelete, setStoryToDelete] = useState<{ userId: string, storyId: string } | null>(null);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     // Use React Query to fetch data
     const { data: queryData, isLoading } = useQuery({
@@ -190,36 +205,17 @@ export default function UsersPage() {
     };
 
     const handleAddStory = (userId: string) => {
-        const titles = [
-            "El Dragón Dormido",
-            "Viaje a la Luna",
-            "El Secreto del Bosque",
-            "La Ciudad de Cristal",
-            "El Pequeño Gigante",
-            "Aventuras en el Espacio",
-            "El Misterio del Lago"
-        ];
-        const randomTitle = titles[Math.floor(Math.random() * titles.length)];
-
-        const newStory: Story = {
-            id: Math.random().toString(36).substr(2, 9),
-            title: randomTitle,
-            date: new Date().toISOString().split('T')[0]
-        };
-
-        setData(prevData => prevData.map(user => {
-            if (user.id === userId) {
-                return {
-                    ...user,
-                    hasAssignedTales: true,
-                    stories: [newStory, ...user.stories]
-                };
-            }
-            return user;
-        }));
+        // Placeholder for add functionality if needed in future, currently disabled in UI
+        toast.info("Función de asignar desactivada temporalmente");
     };
 
-    const handleRemoveStory = (userId: string, storyId: string) => {
+    const confirmRemoveStory = async () => {
+        if (!storyToDelete) return;
+        setIsDeleting(true);
+        const { userId, storyId } = storyToDelete;
+
+        // Optimistic Update
+        const previousData = [...localData];
         setData(prevData => prevData.map(user => {
             if (user.id === userId) {
                 const updatedStories = user.stories.filter(s => s.id !== storyId);
@@ -231,6 +227,24 @@ export default function UsersPage() {
             }
             return user;
         }));
+
+        try {
+            await fetcher(`users/stories/${storyId}`, { method: 'DELETE' });
+            toast.success("Asignación removida correctamente");
+            setIsDeleteModalOpen(false);
+            setStoryToDelete(null);
+        } catch (error) {
+            console.error("Error removing story assignment:", error);
+            toast.error("Error al remover la asignación");
+            setData(previousData); // Revert
+        } finally {
+            setIsDeleting(false);
+        }
+    };
+
+    const handleRemoveClick = (userId: string, storyId: string) => {
+        setStoryToDelete({ userId, storyId });
+        setIsDeleteModalOpen(true);
     };
 
     // Filter Logic
@@ -506,56 +520,67 @@ export default function UsersPage() {
                                                     Biblioteca de {user.name}
                                                 </SheetTitle>
                                                 <SheetDescription>
-                                                    Gestiona las historias personalizadas asignadas a este usuario.
+                                                    Linea de tiempo de cuentos asignados a este usuario.
                                                 </SheetDescription>
                                             </SheetHeader>
 
-                                            <div className="flex items-center justify-between mb-4">
-                                                <h4 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
-                                                    Historias ({user.stories.length})
-                                                </h4>
-                                                <Button
-                                                    size="sm"
-                                                    onClick={() => handleAddStory(user.id)}
-                                                    className="gap-1.5 h-8 bg-blue-600 hover:bg-blue-700 text-white"
-                                                >
-                                                    <Plus className="h-3.5 w-3.5" />
-                                                    Asignar Cuento
-                                                </Button>
-                                            </div>
-
-                                            <div className="space-y-3 pr-2 max-h-[calc(100vh-200px)] overflow-y-auto custom-scrollbar">
+                                            {/* Story List / Timeline */}
+                                            <div className="space-y-6 pr-2 max-h-[calc(100vh-150px)] overflow-y-auto custom-scrollbar pl-4 border-l-2 border-slate-100 dark:border-slate-800 ml-2">
                                                 {user.stories.length === 0 ? (
-                                                    <div className="flex flex-col items-center justify-center py-12 text-center border-2 border-dashed rounded-lg border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
-                                                        <BookOpen className="h-10 w-10 text-slate-300 mb-2" />
+                                                    <div className="flex flex-col items-center justify-center py-12 text-center -ml-4">
+                                                        <div className="bg-slate-50 p-4 rounded-full mb-3">
+                                                            <BookOpen className="h-8 w-8 text-slate-300" />
+                                                        </div>
                                                         <p className="text-sm text-muted-foreground font-medium">No hay cuentos asignados</p>
-                                                        <p className="text-xs text-slate-400 mt-1">Haz clic en "Asignar Cuento" para comenzar</p>
                                                     </div>
                                                 ) : (
                                                     user.stories.map((story) => (
-                                                        <div key={story.id} className="group relative flex items-center gap-4 p-4 rounded-xl border border-slate-200 bg-white dark:bg-slate-950 dark:border-slate-800 hover:shadow-md hover:border-blue-200 dark:hover:border-blue-900 transition-all duration-200">
-                                                            <div className="h-12 w-12 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white shadow-sm shrink-0">
-                                                                <BookOpen className="h-6 w-6" />
-                                                            </div>
-                                                            <div className="flex-1 min-w-0">
-                                                                <h3 className="font-semibold text-slate-900 dark:text-slate-100 truncate pr-8">
-                                                                    {story.title}
-                                                                </h3>
-                                                                <div className="flex items-center gap-2 text-xs text-slate-500 mt-1">
-                                                                    <span className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">
-                                                                        <CalendarDays className="h-3 w-3" />
-                                                                        {story.date}
-                                                                    </span>
+                                                        <div key={story.id} className="relative group">
+                                                            {/* Dot on timeline */}
+                                                            <div className="absolute -left-[25px] top-6 h-4 w-4 rounded-full border-4 border-white dark:border-black bg-blue-500 shadow-sm z-10" />
+
+                                                            <div className="flex gap-4 p-4 rounded-xl border border-slate-100 bg-white dark:bg-slate-950 dark:border-slate-800 hover:shadow-lg hover:border-blue-100 transition-all duration-300">
+                                                                <div className="h-20 w-14 rounded-md overflow-hidden bg-slate-100 shrink-0 border shadow-sm relative group-hover:scale-105 transition-transform">
+                                                                    {story.cover ? (
+                                                                        <img
+                                                                            src={`${IMAGE_URL}${story.cover}`}
+                                                                            className="h-full w-full object-cover"
+                                                                            alt={story.title}
+                                                                        />
+                                                                    ) : (
+                                                                        <div className="h-full w-full flex items-center justify-center bg-blue-100 text-blue-500">
+                                                                            <BookOpen className="h-6 w-6" />
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+
+                                                                <div className="flex-1 min-w-0 flex flex-col justify-center">
+                                                                    <div className="flex items-start justify-between">
+                                                                        <h3 className="font-bold text-slate-900 dark:text-slate-100 truncate pr-2 text-base leading-tight">
+                                                                            {story.title}
+                                                                        </h3>
+                                                                    </div>
+
+                                                                    <div className="flex items-center gap-2 text-xs text-slate-500 mt-2">
+                                                                        <span className="flex items-center gap-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 px-2.5 py-1 rounded-md font-medium text-slate-600 dark:text-slate-400">
+                                                                            <CalendarDays className="h-3.5 w-3.5 text-blue-500" />
+                                                                            {story.date}
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div className="flex flex-col justify-center border-l pl-4 ml-2 border-slate-100">
+                                                                    <Button
+                                                                        variant="ghost"
+                                                                        size="icon"
+                                                                        className="h-8 w-8 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors"
+                                                                        onClick={() => handleRemoveClick(user.id, story.id)}
+                                                                        title="Remover asignación"
+                                                                    >
+                                                                        <Trash2 className="h-4 w-4" />
+                                                                    </Button>
                                                                 </div>
                                                             </div>
-                                                            <Button
-                                                                variant="ghost"
-                                                                size="icon"
-                                                                className="h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-red-50 absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-200"
-                                                                onClick={() => handleRemoveStory(user.id, story.id)}
-                                                            >
-                                                                <Trash2 className="h-4 w-4" />
-                                                            </Button>
                                                         </div>
                                                     ))
                                                 )}
@@ -640,7 +665,54 @@ export default function UsersPage() {
                     </div>
                 </div>
             </div>
+
+            <DeleteStoryModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                onConfirm={confirmRemoveStory}
+                isDeleting={isDeleting}
+            />
         </div>
+    );
+}
+
+// --- Helper Modal ---
+
+function DeleteStoryModal({
+    isOpen,
+    onClose,
+    onConfirm,
+    isDeleting
+}: {
+    isOpen: boolean;
+    onClose: () => void;
+    onConfirm: () => void;
+    isDeleting: boolean;
+}) {
+    return (
+        <Dialog open={isOpen} onOpenChange={onClose}>
+            <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                    <DialogTitle>¿Remover asignación del cuento?</DialogTitle>
+                    <DialogDescription>
+                        Este cuento <b>no se eliminará del sistema</b>, solo se quitará la asignación a este usuario. ¿Desea confirmar esta acción?
+                    </DialogDescription>
+                </DialogHeader>
+                <DialogFooter className="gap-2 sm:gap-0 mt-4">
+                    <Button variant="outline" onClick={onClose} disabled={isDeleting}>Cancelar</Button>
+                    <Button variant="destructive" onClick={onConfirm} disabled={isDeleting}>
+                        {isDeleting ? (
+                            <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Eliminando...
+                            </>
+                        ) : (
+                            'Confirmar y Remover'
+                        )}
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     );
 }
 
